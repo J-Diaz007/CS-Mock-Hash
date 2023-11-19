@@ -1,24 +1,23 @@
-// This allows us to use the bcrypt algorithm in our Node.js project
+// * This allows us to use the bcrypt algorithm in our Node.js project
 const bcrypt = require('bcrypt')
 
-// This allows us to read from the terminal
+// * This allows us to read from the terminal
 const readlineSync = require('readline-sync')
 
-// We'll keep a global object to store usernames and password hashes
+// * We'll keep a global object to store usernames and password hashes
 let globalStore = {}
 
 
 
-/*
-* SOLUTION CODE FOR BCRYPT FUNCTIONS
-*/
+// * SOLUTION CODE FOR BCRYPT FUNCTIONS /////////////
 
-// function for checking a password
+
+// * function for checking a password
 checkPassword = async (username, plaintextPassword) => {
     // TODO: Make sure to delete this console.log once you're done implementing the function!
     console.log('\n Uh-oh, checkPassword is not yet implemented. 😢')
-    // Ensure global store contains the user 
-    // (this is a quick way to check if an object contains a key)
+    // *  Ensure global store contains the user 
+    // * (this is a quick way to check if an object contains a key)
     if (globalStore[username]) {
         // TODO: Use bcrypt's compare methof to compare a plaintext password to a password hash
 
@@ -49,60 +48,56 @@ hashPassword = async (username, password) => {
 
 
 
-
-
-/* 
-* CODE BELOW IS PROVIDED AND DOESN'T NEED TO BE ALTERED 
-*/
+// ! CODE BELOW IS PROVIDED AND DOESN'T NEED TO BE ALTERED 
 
 createUser = async () => {
-    // Prompt the user for a password
+    // * Prompt the user for a password
     let username = readlineSync.question(`\nWhat is your username? `)
 
-    // Make sure the user doesn't already exist
+    // * Make sure the user doesn't already exist
     if (globalStore[username]) {
         console.log(`❌ Sorry, but there is already a user called ${username}\n`)
     }
     else {
-        // If the user is new, prompt them for a password
+        // * If the user is new, prompt them for a password
         let password = readlineSync.question(`What is the password for ${username}? `)
 
-        // Add the user to our system
+        // * Add the user to our system
         await hashPassword(username, password)
     }
 }
 
 loginUser = async () => {
-    // Greet the user
+    // * Greet the user
     console.log(`\nGreat, let's log you in.\n`)
 
-    // Prompt the user for their username
+    // * Prompt the user for their username
     let user = readlineSync.question(`What's your username? `)
 
-    // Prompt the user for their password
+    // * Prompt the user for their password
     let pass = readlineSync.question(`What's your password? `)
 
-    // See if they are a valid user
+    // * See if they are a valid user
     await checkPassword(user, pass)
 }
 
 viewStore = () => {
-    // Show the total user count
+    // * Show the total user count
     console.log(`\nThere are ${Object.keys(globalStore).length} users in the system.\n`)
 
-    // Some lines to break it up visually
+    // * Some lines to break it up visually
     console.log('==================================\n')
 
-    // Print each user
+    // * Print each user
     for (let key in globalStore) {
         console.log(`${key}: ${globalStore[key]}`)
     }
 
-    // Some lines to break it up visually
+    // * Some lines to break it up visually
     console.log('\n==================================\n')
 }
 
-// Program loop
+// * Program loop
 programLoop = async () => {
     while (true) {
         let action = readlineSync.question(`\nWhat action would you like to do? (type 'help' for options) `)
