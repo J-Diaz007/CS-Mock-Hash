@@ -7,7 +7,8 @@ const readlineSync = require('readline-sync')
 // * We'll keep a global object to store usernames and password hashes
 let globalStore = {}
 
-
+// * Number of salt rounds
+const saltRounds = 12;
 
 // * SOLUTION CODE FOR BCRYPT FUNCTIONS /////////////
 
@@ -15,37 +16,42 @@ let globalStore = {}
 // * function for checking a password
 checkPassword = async (username, plaintextPassword) => {
     // TODO: Make sure to delete this console.log once you're done implementing the function!
-    console.log('\n Uh-oh, checkPassword is not yet implemented. 😢')
+    // console.log('\n Uh-oh, checkPassword is not yet implemented. 😢')
+
     // *  Ensure global store contains the user 
     // * (this is a quick way to check if an object contains a key)
     if (globalStore[username]) {
+
         // TODO: Use bcrypt's compare methof to compare a plaintext password to a password hash
+        const result = await bcrypt.compare(plaintextPassword, globalStore[username]);
 
         // TODO: The result variable is a boolean. True means the user was valid. Take action accordingly.
         if (result) {
             // TODO: Display message for valid credentials
+            console.log(`\nWelcome, ${username}!\n`)
         }
         else {
             // TODO: Display message for invalid credentials
+            console.log(`\nGet OUT HACKER!!!\n`)
         }
     }
     else {
-        // Tell the user they can't login to a non-existent account
-        console.log('\n❌ Sorry, but this user does not exist.\n')
+        // * Tell the user they can't login to a non-existent account
+        console.log(`\n❌ Sorry, but this user does not exist.\n`)
     }
 }
 
 hashPassword = async (username, password) => {
-    // TODO: Make sure to delete this console.log once you're done implementing the function!
-    console.log('\nUh-oh, hashPassword is not yet implemented. 😢')
 
     // TODO: Make the password hash using bcrypt
+    let hashedResult = await bcrypt.hash(password, saltRounds);
 
     // TODO: Add the user and password hash to the global store object
+    globalStore[username] = hashedResult
 
     // TODO: Print a status update including the username and password hash
+    console.log(`\nNew user created! Username: ${username} Password: ${password}`)
 }
-
 
 
 // ! CODE BELOW IS PROVIDED AND DOESN'T NEED TO BE ALTERED 
